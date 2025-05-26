@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coin Trader Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .logo-wrapper {
+            position: absolute;        /* 헤더 기준으로 절대 위치 지정 */
+            top: 20px;                 /* 헤더 상단에서 20px 아래 */
+            left: 20px;                /* 헤더 좌측에서 20px 오른쪽 */
+            z-index: 10;               /* 다른 요소들보다 위에 표시 */
+
+            display: inline-flex;      /* 내부 이미지 정렬을 위해 유지 */
+            align-items: center;       /* 내부 이미지 수직 중앙 정렬을 위해 유지 */
+            background-color: #ffffff; /* 배경색 흰색으로 지정 */
+            padding: 10px;             /* 내부 여백 */
+            border-radius: 8px;        /* 모서리 둥글게 */
+            max-width: 150px;          /* 최대 너비 (기존 값 유지) */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 은은한 그림자 추가 (선택 사항) */
+        }
+        .logo {
+            width: 100%;
+            height: auto;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 메인 콘텐츠 */
+        main {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* 분석 도구 섹션 */
+        .tool-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tool-card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .tool-card-header h3 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .tool-card-body {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.9rem;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .tool-link:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* 아직 사용할 수 없는 도구 카드 스타일 */
+        .tool-card--unavailable {
+            background-color: #f0f0f0; /* 카드 전체 배경을 밝은 회색으로 */
+        }
+
+        .tool-card--unavailable .tool-card-header {
+            background-color: #d0d0d0; /* 헤더 배경을 중간 회색으로 */
+            color: #555555;            /* 헤더 텍스트 색상을 어두운 회색으로 */
+        }
+
+        .tool-card--unavailable .tool-card-body p {
+            color: #555555; /* 본문 텍스트 색상도 어두운 회색으로 조정 */
+        }
+
+        .tool-card--unavailable .tool-link {
+            background-color: #b0b0b0; /* 버튼 배경을 어두운 회색으로 */
+            color: #ffffff;            /* 버튼 텍스트 색상을 흰색으로 */
+            pointer-events: none;      /* 버튼 클릭 비활성화 */
+            cursor: not-allowed;       /* 마우스 커서를 '금지' 모양으로 변경 */
+        }
+
+        .tool-card--unavailable .tool-link:hover {
+            background-color: #b0b0b0; /* 호버 시에도 버튼 배경색 유지 */
+        }
+        /* 푸터 스타일 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+        
+        .footer-contact-btn {
+            display: inline-block;
+            background-color: var(--secondary-color); /* 버튼 배경색 */
+            color: white;                             /* 버튼 텍스트색 */
+            padding: 0.8rem 1.5rem;                   /* 버튼 내부 여백 */
+            border-radius: 5px;                       /* 버튼 모서리 둥글게 */
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .footer-contact-btn:hover {
+            background-color: var(--primary-color); /* 호버시 배경색 변경 */
+            transform: translateY(-2px); /* 호버시 약간 위로 이동 */
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 0;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .tool-card-header h3 {
+                font-size: 1.3rem;
+            }
+            
+            .logo-wrapper {
+                position: absolute;   /* 헤더 기준으로 절대 위치 지정 */
+                top: 15px;            /* 헤더 상단에서 15px 아래 (모바일용 간격) */
+                left: 15px;           /* 헤더 좌측에서 15px 오른쪽 (모바일용 간격) */
+                z-index: 10;          /* 다른 요소들보다 위에 표시 */
+
+                display: inline-flex; /* 내부 이미지 정렬을 위해 유지 */
+                align-items: center;  /* 내부 이미지 수직 중앙 정렬을 위해 유지 */
+                max-width: 100px;    /* 모바일에서 로고 최대 너비 약간 줄임 */
+                background-color: #ffffff; /* 배경색 흰색 */
+                padding: 8px;              /* 내부 여백 (모바일에 맞게 약간 줄임) */
+                border-radius: 6px;        /* 모서리 둥글게 (모바일에 맞게 약간 줄임) */
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-wrapper">
+                <img src="img/spaceeum.png" alt="공간이음 로고" class="logo">
+            </div>
+            <h1>AI Coin Trader Dashboard</h1>
+            <p>데이터 기반의 인사이트로 성공적인 코인 투자를 지원합니다.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">분석 도구 바로가기</h2>
+        <section class="tool-links">
+            <div class="tool-card">
+                <div class="tool-card-header">
+                    <h3>캔들차트 기반 Trader 
+                        <br>
+                        - AI 적용 ver 1.1</h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>- 캔들스틱의 패턴을 인식하는 자동 매매
+                        <br>
+                         - UpBit 원화시장 XRP 자동 매매
+                        <br>
+                         - 25.05.15 ver 1.1 
+                        <br>
+                         : XRP 매매로 변경,초기자본금 변경,분석도구 수정</p>
+                    <a href="http://211.57.66.8:8501" class="tool-link">분석 도구 열기</a>
+                </div>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-card-header">
+                    <h3>60일 이평 기반 Trader 
+                        <br>
+                        - AI 비적용 제작중</h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>- 60일 이평선과 일목균형표를 결합한 매매
+                        <br>
+                        - upBit 원화시장의 모든 종목검색
+                        <br>
+                        - 현재 AI 비적용 버전
+                        <br>
+                        : 초기 매매 효율성 확인 단계</p>
+                    <a href="http://211.57.66.8:8502" class="tool-link">분석 도구 열기</a>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-card-header">
+                    <h3>기준선 + **지표 기반 Trader 
+                        <br>
+                        - AI 비적용 제작중</h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>- 일목균형표 기준선과 **지표를 결합한 매매
+                        <br>
+                        - Binance Scot USDT시장의 BTC 자동 매매
+                        <br>
+                        - 현재 AI 비적용 버전
+                        <br>
+                        : 초기 매매 효율성 확인 단계</p>
+                    <a href="http://211.57.66.8:8503" class="tool-link">분석 도구 열기</a>
+                </div>
+            </div>
+
+            <div class="tool-card tool-card--unavailable">
+                <div class="tool-card-header">
+                    <h3>
+                        20일 이평 기반 Trader
+                        <br>
+                        - AI 비적용 제작중
+                    </h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>- 20일 이평선과 일목균형표를 결합한 매매
+                        <br>
+                        - UpBit 원화시장의 모든 종목검색</p>
+                    <a href="http://211.57.66.8:8502" class="tool-link">준비중</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-contact-btn">Contact US</a>
+        </div>
+    </footer>
+</body>
+</html>
