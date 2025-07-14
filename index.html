@@ -49,24 +49,7 @@
             position: relative;
         }
         
-        .logo-wrapper {
-            position: absolute;        /* 헤더 기준으로 절대 위치 지정 */
-            top: 20px;                 /* 헤더 상단에서 20px 아래 */
-            left: 20px;                /* 헤더 좌측에서 20px 오른쪽 */
-            z-index: 10;               /* 다른 요소들보다 위에 표시 */
-
-            display: inline-flex;      /* 내부 이미지 정렬을 위해 유지 */
-            align-items: center;       /* 내부 이미지 수직 중앙 정렬을 위해 유지 */
-            background-color: #ffffff; /* 배경색 흰색으로 지정 */
-            padding: 10px;             /* 내부 여백 */
-            border-radius: 8px;        /* 모서리 둥글게 */
-            max-width: 150px;          /* 최대 너비 (기존 값 유지) */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 은은한 그림자 추가 (선택 사항) */
-        }
-        .logo {
-            width: 100%;
-            height: auto;
-        }
+        
 
         header h1 {
             font-size: 2.8rem;
@@ -245,29 +228,14 @@
                 font-size: 1.3rem;
             }
             
-            .logo-wrapper {
-                position: absolute;   /* 헤더 기준으로 절대 위치 지정 */
-                top: 15px;            /* 헤더 상단에서 15px 아래 (모바일용 간격) */
-                left: 15px;           /* 헤더 좌측에서 15px 오른쪽 (모바일용 간격) */
-                z-index: 10;          /* 다른 요소들보다 위에 표시 */
-
-                display: inline-flex; /* 내부 이미지 정렬을 위해 유지 */
-                align-items: center;  /* 내부 이미지 수직 중앙 정렬을 위해 유지 */
-                max-width: 100px;    /* 모바일에서 로고 최대 너비 약간 줄임 */
-                background-color: #ffffff; /* 배경색 흰색 */
-                padding: 8px;              /* 내부 여백 (모바일에 맞게 약간 줄임) */
-                border-radius: 6px;        /* 모서리 둥글게 (모바일에 맞게 약간 줄임) */
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            }
+            
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <div class="logo-wrapper">
-                <img src="spaceeum.png" alt="공간이음 로고" class="logo">
-            </div>
+            
             <h1>AI Coin Trader Dashboard</h1>
             <p>데이터 기반의 인사이트로 성공적인 코인 투자를 지원합니다.</p>
         </div>
@@ -277,6 +245,21 @@
         <h2 class="section-title">분석 도구 바로가기</h2>
         <section class="tool-links">
             <div class="tool-card">
+                <div class="tool-card-header">
+                    <h3>이동평균선 기반의 자동매매</h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>- 이동평균선의 패턴을 인식하는 자동 매매
+                        <br>
+                         - 바이낸스 선물시장 BTC 자동 매매
+                        <br>
+                         - 25.07.14~ 
+                        <br>
+                         : 초기자본금 $500</p>
+                    <a href="http://211.57.66.8:8501" class="tool-link">분석 도구 열기</a>
+                </div>
+            </div>
+            <div class="tool-card tool-card--unavailable">
                 <div class="tool-card-header">
                     <h3>캔들차트 기반 Trader 
                         <br>
@@ -290,11 +273,11 @@
                          - 25.05.15 ver 1.1 
                         <br>
                          : XRP 매매로 변경,초기자본금 변경,분석도구 수정</p>
-                    <a href="http://211.57.66.8:8501" class="tool-link">분석 도구 열기</a>
+                    <a href="http://211.57.66.8:8501" class="tool-link">준비중</a>
                 </div>
             </div>
             
-            <div class="tool-card">
+            <div class="tool-card tool-card--unavailable">
                 <div class="tool-card-header">
                     <h3>60일 이평 기반 Trader 
                         <br>
@@ -308,11 +291,11 @@
                         - 현재 AI 비적용 버전
                         <br>
                         : 초기 매매 효율성 확인 단계</p>
-                    <a href="http://211.57.66.8:8502" class="tool-link">분석 도구 열기</a>
+                    <a href="http://211.57.66.8:8502" class="tool-link">준비중</a>
                 </div>
             </div>
 
-            <div class="tool-card">
+            <div class="tool-card tool-card--unavailable">
                 <div class="tool-card-header">
                     <h3>기준선 + **지표 기반 Trader 
                         <br>
@@ -326,7 +309,7 @@
                         - 현재 AI 비적용 버전
                         <br>
                         : 초기 매매 효율성 확인 단계</p>
-                    <a href="http://211.57.66.8:8503" class="tool-link">분석 도구 열기</a>
+                    <a href="http://211.57.66.8:8503" class="tool-link">준비중</a>
                 </div>
             </div>
 
